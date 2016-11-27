@@ -1,5 +1,5 @@
---temp-output:C:\_Code\Fan.Software\src\Software\obj\Debug\netcoreapp1.0\
---out:C:\_Code\Fan.Software\src\Software\bin\Debug\netcoreapp1.0\Software.dll
+--temp-output:C:\_Code\Fan.Software\src\Software\bin\Software\obj\Debug\netcoreapp1.0\
+--out:C:\_Code\Fan.Software\src\Software\bin\Software\bin\Debug\netcoreapp1.0\Software.dll
 --define:DEBUG
 --define:TRACE
 --define:NETCOREAPP1_0
@@ -223,7 +223,7 @@
 --reference:C:\Users\Fan\.nuget\packages\System.Threading.Timer\4.0.1\ref\netstandard1.2\System.Threading.Timer.dll
 --reference:C:\Users\Fan\.nuget\packages\System.Xml.ReaderWriter\4.0.11\ref\netstandard1.3\System.Xml.ReaderWriter.dll
 --reference:C:\Users\Fan\.nuget\packages\System.Xml.XDocument\4.0.11\ref\netstandard1.3\System.Xml.XDocument.dll
---resource:"C:\_Code\Fan.Software\src\Software\obj\Debug\netcoreapp1.0\Softwaredotnet-compile.deps.json",Software.deps.json
+--resource:"C:\_Code\Fan.Software\src\Software\bin\Software\obj\Debug\netcoreapp1.0\Softwaredotnet-compile.deps.json",Software.deps.json
 C:\_Code\Fan.Software\src\Software\Program.cs
 C:\_Code\Fan.Software\src\Software\Startup.cs
 C:\_Code\Fan.Software\src\Software\Controllers\AccountController.cs
