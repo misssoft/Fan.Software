@@ -229,7 +229,6 @@ C:\_Code\Fan.Software\src\Software\Startup.cs
 C:\_Code\Fan.Software\src\Software\Controllers\AccountController.cs
 C:\_Code\Fan.Software\src\Software\Controllers\HomeController.cs
 C:\_Code\Fan.Software\src\Software\Controllers\ManageController.cs
-C:\_Code\Fan.Software\src\Software\Controllers\QuestionsController.cs
 C:\_Code\Fan.Software\src\Software\Data\ApplicationDbContext.cs
 C:\_Code\Fan.Software\src\Software\Data\Migrations\00000000000000_CreateIdentitySchema.cs
 C:\_Code\Fan.Software\src\Software\Data\Migrations\00000000000000_CreateIdentitySchema.Designer.cs
@@ -237,9 +236,9 @@ C:\_Code\Fan.Software\src\Software\Data\Migrations\20161210112605_QuestionandAns
 C:\_Code\Fan.Software\src\Software\Data\Migrations\20161210112605_QuestionandAnswerTable.Designer.cs
 C:\_Code\Fan.Software\src\Software\Data\Migrations\20161210133109_AddQuestionSummaryColumn.cs
 C:\_Code\Fan.Software\src\Software\Data\Migrations\20161210133109_AddQuestionSummaryColumn.Designer.cs
+C:\_Code\Fan.Software\src\Software\Data\Migrations\20161210215940_Removetables.cs
+C:\_Code\Fan.Software\src\Software\Data\Migrations\20161210215940_Removetables.Designer.cs
 C:\_Code\Fan.Software\src\Software\Data\Migrations\ApplicationDbContextModelSnapshot.cs
-C:\_Code\Fan.Software\src\Software\DomainModels\Answer.cs
-C:\_Code\Fan.Software\src\Software\DomainModels\Question.cs
 C:\_Code\Fan.Software\src\Software\Models\ApplicationUser.cs
 C:\_Code\Fan.Software\src\Software\Models\AccountViewModels\ExternalLoginConfirmationViewModel.cs
 C:\_Code\Fan.Software\src\Software\Models\AccountViewModels\ForgotPasswordViewModel.cs
