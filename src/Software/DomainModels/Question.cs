@@ -18,6 +18,8 @@ namespace Software.DomainModels
 
         public string Topic { get; set; }
 
+        public string QuestionSummary { get; set; }
+
         public string QuestionMessage { get; set; }
 
         public IEnumerable<Answer> Answers { get; set; }
