@@ -1,0 +1,57 @@
+@model Software.DomainModels.QuizzesViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>QuizzesViewModel</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Question" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Question" class="form-control" />
+                <span asp-validation-for="Question" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Answer" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Answer" class="form-control" />
+                <span asp-validation-for="Answer" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Notes" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Notes" class="form-control" />
+                <span asp-validation-for="Notes" class="text-danger" />
+            </div>
+        </div>
+       <div class="form-group">
+            <label asp-for="Topic" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.TopicId, new SelectList(Model.Topics, "Id", "Summary"), "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TopicId)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

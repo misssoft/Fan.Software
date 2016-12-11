@@ -12,6 +12,8 @@ namespace Software.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Topic> Topics { get; set; }
+
+        public DbSet<Quiz> Quizzes { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
