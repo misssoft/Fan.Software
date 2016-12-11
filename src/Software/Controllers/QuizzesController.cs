@@ -20,11 +20,11 @@ namespace Software.Controllers
         public async Task<IActionResult> Index()
         {
             var quizzes = _context.Quizzes.ToList();
-            var viewModel = new List<QuizzesViewModel>();
+            var viewModel = new List<QuizViewModel>();
             foreach (var quiz in quizzes)
             {
                 var topic = await _context.Topics.SingleOrDefaultAsync(m => m.Id == quiz.TopicId);
-                var vm = new QuizzesViewModel()
+                var vm = new QuizViewModel()
                {
                    Answer = quiz.Answer,
                    Id = quiz.Id,
@@ -40,14 +40,14 @@ namespace Software.Controllers
 
         public IActionResult Create()
         {
-            var vm = new QuizzesViewModel();
+            var vm = new QuizViewModel();
             vm.Topics = _context.Topics.ToList();
             
             return View(vm);
         }
         
         [HttpPost]
-        public IActionResult Create(QuizzesViewModel model)
+        public IActionResult Create(QuizViewModel model)
         {
             var quiz = new Quiz()
             {
@@ -103,7 +103,7 @@ namespace Software.Controllers
             var topic = await _context.Topics.SingleOrDefaultAsync(m => m.Id == quiz.TopicId);
             quiz.Topic = topic;
 
-            var vm = new QuizzesViewModel()
+            var vm = new QuizViewModel()
             {
                 Answer = quiz.Answer,
                 Id = quiz.Id,
@@ -116,5 +116,72 @@ namespace Software.Controllers
             return View(vm);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Question,Answer,Notes,TopicId")] QuizViewModel quizModel)
+        {
+            if (id != quizModel.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var quiz = await _context.Quizzes.SingleOrDefaultAsync(m => m.Id == id);
+                    quiz.Question = quizModel.Question;
+                    quiz.Answer = quizModel.Answer;
+                    quiz.Notes = quizModel.Notes;
+                    quiz.TopicId = quizModel.TopicId;
+                    _context.Update(quiz);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!QuizExists(quizModel.Id))
+                    {
+                        return NotFound();
+                    }
+                    throw;
+                }
+                return RedirectToAction("Index");
+            }
+            return View(quizModel);
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var quiz = await _context.Quizzes.SingleOrDefaultAsync(m => m.Id == id);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+
+            return View(quiz);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var quiz = await _context.Quizzes.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Quizzes.Remove(quiz);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        private bool QuizExists(int id)
+        {
+            return _context.Quizzes.Any(e => e.Id == id);
+        }
+
     }
+
+
 }

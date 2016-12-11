@@ -1,18 +1,18 @@
-@model Software.DomainModels.QuizzesViewModel
+@model Software.DomainModels.QuizViewModel
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Quiz Edit</h2>
 
 <form asp-action="Edit">
     <div class="form-horizontal">
         <h4>QuizzesViewModel</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
+        <div class="form-group" style="display: none;">
             <label asp-for="Id" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="Id" class="form-control" />
@@ -22,21 +22,21 @@
         <div class="form-group">
             <label asp-for="Question" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Question" class="form-control" />
+                <textarea asp-for="Question" cols="160" rows="2" class="form-control"></textarea>
                 <span asp-validation-for="Question" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Answer" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Answer" class="form-control" />
+                <textarea asp-for="Answer" cols="160" rows="5" class="form-control"></textarea>
                 <span asp-validation-for="Answer" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Notes" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Notes" class="form-control" />
+                <textarea asp-for="Notes" cols="160" rows="5" class="form-control"></textarea>
                 <span asp-validation-for="Notes" class="text-danger" />
             </div>
         </div>
