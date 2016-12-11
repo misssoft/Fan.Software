@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Software.Data;
 using Software.DomainModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Software.Controllers
 {
@@ -16,19 +17,20 @@ namespace Software.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var quizzes = _context.Quizzes.ToList();
             var viewModel = new List<QuizzesViewModel>();
             foreach (var quiz in quizzes)
             {
-               var vm = new QuizzesViewModel()
+                var topic = await _context.Topics.SingleOrDefaultAsync(m => m.Id == quiz.TopicId);
+                var vm = new QuizzesViewModel()
                {
                    Answer = quiz.Answer,
                    Id = quiz.Id,
                    Notes = quiz.Notes,
                    Question = quiz.Question,
-                   Topic = quiz.Topic,
+                   Topic = topic,
                    TopicId = quiz.TopicId,
                };
                 viewModel.Add(vm);
@@ -57,19 +59,62 @@ namespace Software.Controllers
 
            if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Add(quiz);
+                _context.Add(quiz);
                     var result =_context.SaveChanges();
                     return RedirectToAction("Index");
-                }
-                catch (Exception ex)
-                {
-                    return View(model);
-                }
+                
             }
-
             return View(model);
         }
+        
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var quiz = await _context.Quizzes.SingleOrDefaultAsync(m => m.Id == id);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+            if (quiz.Topic == null && quiz.TopicId > 0)
+            {
+                var topic = await _context.Topics.SingleOrDefaultAsync(m => m.Id == quiz.TopicId);
+                quiz.Topic = topic;
+            }
+            return View(quiz);
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var quiz = await _context.Quizzes.SingleOrDefaultAsync(m => m.Id == id);
+            if (quiz == null)
+            {
+                return NotFound();
+            }
+
+            var topic = await _context.Topics.SingleOrDefaultAsync(m => m.Id == quiz.TopicId);
+            quiz.Topic = topic;
+
+            var vm = new QuizzesViewModel()
+            {
+                Answer = quiz.Answer,
+                Id = quiz.Id,
+                Notes = quiz.Notes,
+                Question = quiz.Question,
+                Topic = quiz.Topic,
+                TopicId = quiz.TopicId,
+            };
+            vm.Topics = _context.Topics.ToList();
+            return View(vm);
+        }
+
     }
 }
