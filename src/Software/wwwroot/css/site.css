@@ -12,6 +12,10 @@
     padding-right: 15px;
 }
 
+.navbar-brand {
+    font-size: 24px;
+}
+
 /* Set widths on the form inputs since otherwise they're 100% wide */
 input,
 select,
