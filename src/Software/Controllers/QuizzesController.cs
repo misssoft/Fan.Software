@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Software.Data;
 using Software.DomainModels;
@@ -47,6 +48,7 @@ namespace Software.Controllers
         }
         
         [HttpPost]
+        [Authorize]
         public IActionResult Create(QuizViewModel model)
         {
             var quiz = new Quiz()
@@ -87,6 +89,7 @@ namespace Software.Controllers
             return View(quiz);
         }
 
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -117,6 +120,7 @@ namespace Software.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Question,Answer,Notes,TopicId")] QuizViewModel quizModel)
         {
@@ -150,6 +154,7 @@ namespace Software.Controllers
             return View(quizModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -166,6 +171,7 @@ namespace Software.Controllers
             return View(quiz);
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
