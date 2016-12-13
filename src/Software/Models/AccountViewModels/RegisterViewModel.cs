@@ -9,9 +9,21 @@ namespace Software.Models.AccountViewModels
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "Name")]
+        [StringLength(100)]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "NickName")]
+        [StringLength(100)]
+        public string NickName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+       
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
