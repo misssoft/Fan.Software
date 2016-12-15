@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Software.DomainModels;
 using Software.Models;
 
@@ -14,6 +15,10 @@ namespace Software.Data
         public DbSet<Topic> Topics { get; set; }
 
         public DbSet<Quiz> Quizzes { get; set; }
+
+        public DbSet<GroupWork> Works { get; set; }
+
+        public DbSet<GroupAssignments> Assignments { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -22,12 +27,18 @@ namespace Software.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<GroupAssignments>().HasKey(x => new
+            {
+                x.MemberId,
+                x.WorkId
+            });
+
+            builder.Entity<GroupAssignments>()
+           .HasOne(p => p.Work)
+           .WithMany()
+           .OnDelete(DeleteBehavior.Restrict);
+
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
-
-
         }
 
     }
