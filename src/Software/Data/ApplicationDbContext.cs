@@ -18,8 +18,9 @@ namespace Software.Data
 
         public DbSet<GroupWork> Works { get; set; }
 
-        public DbSet<GroupAssignments> Assignments { get; set; }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public DbSet<GroupAssignment> Assignments { get; set; }
+
+       public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
             
@@ -27,13 +28,13 @@ namespace Software.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<GroupAssignments>().HasKey(x => new
+            builder.Entity<GroupAssignment>().HasKey(x => new
             {
                 x.MemberId,
                 x.WorkId
             });
 
-            builder.Entity<GroupAssignments>()
+            builder.Entity<GroupAssignment>()
            .HasOne(p => p.Work)
            .WithMany()
            .OnDelete(DeleteBehavior.Restrict);

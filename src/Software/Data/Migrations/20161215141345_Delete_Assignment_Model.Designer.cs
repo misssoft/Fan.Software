@@ -8,9 +8,10 @@ using Software.Data;
 namespace Software.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161215141345_Delete_Assignment_Model")]
+    partial class Delete_Assignment_Model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -121,21 +122,6 @@ namespace Software.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Software.DomainModels.GroupAssignment", b =>
-                {
-                    b.Property<string>("MemberId");
-
-                    b.Property<int>("WorkId");
-
-                    b.HasKey("MemberId", "WorkId");
-
-                    b.HasIndex("MemberId");
-
-                    b.HasIndex("WorkId");
-
-                    b.ToTable("Assignments");
                 });
 
             modelBuilder.Entity("Software.DomainModels.GroupWork", b =>
@@ -283,18 +269,6 @@ namespace Software.Data.Migrations
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Software.DomainModels.GroupAssignment", b =>
-                {
-                    b.HasOne("Software.Models.ApplicationUser", "Member")
-                        .WithMany()
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Software.DomainModels.GroupWork", "Work")
-                        .WithMany()
-                        .HasForeignKey("WorkId");
                 });
 
             modelBuilder.Entity("Software.DomainModels.Quiz", b =>
