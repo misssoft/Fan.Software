@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +26,20 @@ namespace Software.Controllers
         // GET: GroupWorks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Works.ToListAsync());
+            var works = await _context.Works.ToListAsync();
+           
+            var worksVm = TransformtoVM(works);
+
+            var vm = new GroupWorkViewModel()
+            {
+                Works = worksVm,
+                Heading = "All Works",
+                ManagingAccount = false
+            };
+            return View("_GroupWorks",vm);
         }
+
+        
 
         // GET: GroupWorks/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -145,9 +159,48 @@ namespace Software.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public ActionResult Members()
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var works = _context.Assignments.Where(a=>a.MemberId == userId).Select(w=>w.Work).ToList();
+            var worksvm = TransformtoVM(works);
+           
+            var vm = new GroupWorkViewModel()
+            {
+                Works = worksvm,
+                Heading = "My Group Work",
+                ManagingAccount = true
+            };
+
+            return View("_GroupWorks",vm);
+        }
+
+        private List<WorkViewModel> TransformtoVM(List<GroupWork> works)
+        {
+            var worksVm = new List<WorkViewModel>();
+
+            foreach (var work in works)
+            {
+                var workvm = new WorkViewModel()
+                {
+                    GroupWork = work,
+                    CanJoin = CanJoin(work.Id)
+                };
+                worksVm.Add(workvm);
+            }
+            return worksVm;
+        }
+
         private bool GroupWorkExists(int id)
         {
             return _context.Works.Any(e => e.Id == id);
+        }
+
+        private bool CanJoin(int workId)
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return !_context.Assignments.Any(x => x.MemberId == userId && x.WorkId == workId);
         }
     }
 }

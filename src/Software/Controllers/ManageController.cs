@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Software.Data;
 using Software.Models;
+using Software.Models.AccountViewModels;
 using Software.Models.ManageViewModels;
 using Software.Services;
 
@@ -26,7 +28,8 @@ namespace Software.Controllers
         SignInManager<ApplicationUser> signInManager,
         IEmailSender emailSender,
         ISmsSender smsSender,
-        ILoggerFactory loggerFactory)
+        ILoggerFactory loggerFactory
+         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -53,14 +56,12 @@ namespace Software.Controllers
             if (user == null)
             {
                 return View("Error");
-            }
-            var model = new IndexViewModel
+             }
+            var model = new RegisterViewModel()
             {
-                HasPassword = await _userManager.HasPasswordAsync(user),
-                PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
-                TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
-                Logins = await _userManager.GetLoginsAsync(user),
-                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
+                Name = user.Name,
+                NickName = user.NickName,
+                Email = user.Email
             };
             return View(model);
         }
@@ -358,3 +359,4 @@ namespace Software.Controllers
         #endregion
     }
 }
+

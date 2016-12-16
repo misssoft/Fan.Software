@@ -24,6 +24,7 @@ namespace Software.WebApi
         }
 
         [HttpPost]
+        [Route("Join")]
         public IActionResult Join(AssignmentDto dto)
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -45,6 +46,23 @@ namespace Software.WebApi
 
             return Ok();
         }
+
+        [HttpPost]
+        [Route("Drop")]
+        public IActionResult Drop(AssignmentDto dto)
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var assignment = _context.Assignments.FirstOrDefault(m => m.MemberId == userId && m.WorkId == dto.WorkId);
+
+            if (assignment == null)
+            {
+                return BadRequest("You are not a member");
+            }
+            _context.Assignments.Remove(assignment);
+            _context.SaveChanges();
+            return Ok();
+        }
+       
     }
 
     

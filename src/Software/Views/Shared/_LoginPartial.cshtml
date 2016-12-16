@@ -6,14 +6,17 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+    var user = await UserManager.GetUserAsync(User);
+    var name = user.NickName;
     <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    @UserManager.GetUserName(User)<span class="caret"></span>
+                    @name<span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li class="dropdown-toggle"><a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Manage account</a></li>
+                    <li class="dropdown-toggle"><a asp-area="" asp-controller="GroupWorks" asp-action="Members" title="Manage">My Group Work</a></li>
                     <li role="separator" class="divider"></li>
                     <li class="dropdown-toggle"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
 

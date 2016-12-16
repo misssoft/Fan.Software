@@ -442,6 +442,18 @@ namespace Software.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return View("Error");
+            }
+            var result = await _userManager.DeleteAsync(user);
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
+
         #region Helpers
 
         private void AddErrors(IdentityResult result)
