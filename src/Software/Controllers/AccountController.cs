@@ -443,15 +443,20 @@ namespace Software.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(string userId)
+        public async Task<IActionResult> Delete(string email)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return View("Error");
             }
+            
+            await _signInManager.SignOutAsync();
+
             var result = await _userManager.DeleteAsync(user);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+
         }
 
         #region Helpers

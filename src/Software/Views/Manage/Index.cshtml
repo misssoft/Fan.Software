@@ -2,14 +2,11 @@
 @{
     ViewData["Title"] = "Manage your account";
 }
-
 <h2>@ViewData["Title"].</h2>
 <p class="text-success">@ViewData["StatusMessage"]</p>
-
 <div>
     <h4>My Account</h4>
     <hr />
-
     <dl class="dl-horizontal">
         <dt>Name</dt>
         <dd>@Model.Name</dd>
@@ -22,5 +19,9 @@
         <dd>@Model.Email</dd>
 
     </dl>
-</div>
 
+    <form asp-controller="Account" asp-action="Delete" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+        <input asp-for="Email" class="hidden" />
+        <input type="submit" value="Delete Account" />
+     </form>
+</div>
