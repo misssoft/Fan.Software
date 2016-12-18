@@ -36,7 +36,7 @@ namespace Software.Controllers
                 Heading = "All Works",
                 ManagingAccount = false
             };
-            return View("_GroupWorks",vm);
+            return View(vm);
         }
 
         

@@ -1,0 +1,148 @@
+@model Software.DomainModels.GroupWorkViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Heading</h2>
+
+<p>
+    @if (!Model.ManagingAccount)
+    {
+        <a asp-action="Create">Create New</a>
+    }
+</p>
+@if (Model.Works.Any())
+{
+    <div class="row">
+      @foreach (var item in Model.Works)
+      {
+          <div class="col-md-4 panel panel-info">
+              <div class="panel-heading">@Html.DisplayFor(modelItem => item.GroupWork.Name)</div>
+              <div class="panel-body">@Html.DisplayFor(modelItem => item.GroupWork.Description)</div>
+          </div>
+      }
+
+    </div>
+}
+else
+{ <p>No work yet.</p>
+        }
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Work Name
+                    </th>
+                    <th>
+                        Work Description
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Works)
+                {
+                    <tr id="@item.GroupWork.Id">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GroupWork.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GroupWork.Description)
+                        </td>
+                        <td>
+                            @*<a asp-action="Edit" asp-route-id="@item.GroupWork.Id">Edit</a> |*@
+                            <a asp-action="Details" asp-route-id="@item.GroupWork.Id">Details</a>
+                            @*<a asp-action="Delete" asp-route-id="@item.GroupWork.Id">Delete</a>*@
+                        </td>
+                        <td>
+                            @if (!Model.ManagingAccount)
+                    {
+                        if (item.CanJoin)
+                        {
+                                    <button data-work-id="@item.GroupWork.Id" style="width: 100px" class="btn btn-md btn-info pull-right js-toggle-join btn-block">Join</button>
+                                }
+                                else
+                                {
+                                    <button data-work-id="@item.GroupWork.Id" style="width: 100px" class="btn btn-md btn-warning pull-right js-toggle-drop btn-block">Leave</button>
+                                }
+                            }
+                            else
+                            {
+                                if (!item.CanJoin)
+                                {
+                                    <button data-work-id="@item.GroupWork.Id" style="width: 100px" class="btn btn-md btn-warning pull-right js-toggle-drop">Leave</button>
+                                }
+                            }
+
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+
+
+        @section scripts{
+            <script>
+                $(document)
+                    .on('click',
+                        '.js-toggle-join',
+                        function (e) {
+                            var button = $(e.target);
+                            $.post("/api/assignments/join", { workid: button.attr("data-work-id") })
+                                .done(function (
+                                ) {
+                                    button.removeClass("js-toggle-join");
+                                    button.removeClass("btn-info");
+                                    button.addClass("btn-warning");
+                                    button.addClass("js-toggle-drop");
+                                    button.text("Leave");
+
+                                })
+                                .fail(function () {
+                                    alert("Something not right");
+                                });
+                        })
+                    .on('click',
+                        '.js-toggle-drop',
+                        function (e) {
+                            var button = $(e.target);
+
+                            bootbox.confirm({
+                                message: "Are you sure to give up this work",
+                                buttons: {
+                                    confirm: {
+                                        label: 'Yes',
+                                        className: 'btn-danger'
+                                    },
+                                    cancel: {
+                                        label: 'No',
+                                        className: 'btn-default'
+                                    }
+                                },
+                                callback: function (result) {
+                                    if (result) {
+                                        $.post("/api/assignments/drop", { workid: button.attr("data-work-id") })
+                                            .done(function (
+                                            ) {
+                                                button.removeClass("js-toggle-drop");
+                                                button.removeClass("btn-warning");
+                                                button.addClass("btn-info");
+                                                button.addClass("js-toggle-join");
+                                                button.text("Join");
+
+                                            })
+                                            .fail(function () {
+                                                alert("Something not right");
+                                            });
+                                    } else {
+                                        bootbox.hideAll();
+                                    }
+                                }
+                            });
+                        });
+            </script>
+        }

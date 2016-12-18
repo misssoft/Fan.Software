@@ -56,4 +56,13 @@ textarea {
   }
 }
 
+.col-md-4 {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.panel {
+    height: 250px;
+
+}
+
 
