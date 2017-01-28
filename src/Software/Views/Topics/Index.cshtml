@@ -14,10 +14,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Summary)
+                @Html.ActionLink("Summary","Index", new { sortOrder = ViewBag.SummarySort })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Intro)
+                @Html.ActionLink("Intro", "Index", new { sortOrder = ViewBag.IntroSort })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rate)

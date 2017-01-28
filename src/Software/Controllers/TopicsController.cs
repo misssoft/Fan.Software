@@ -15,16 +15,37 @@ namespace Software.Controllers
     public class TopicsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        
         public TopicsController(ApplicationDbContext context)
         {
             _context = context;    
         }
 
         // GET: Topics
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string sortOrder)
         {
-            return View(await _context.Topics.ToListAsync());
+            ViewBag.SummarySort = string.IsNullOrEmpty(sortOrder) ? "summary_desc" : "";
+            ViewBag.IntroSort = string.IsNullOrEmpty(sortOrder) ? "intro_desc" : "intro_asc";
+
+            var topics = from s in _context.Topics select s;
+            switch (sortOrder)
+            {
+                case "summary_desc":
+                    topics = topics.OrderByDescending(t => t.Summary);
+                    break;
+                case "intro_asc":
+                    topics = topics.OrderBy(t => t.Intro);
+                    break;
+                case "intro_desc":
+                    topics = topics.OrderByDescending(t => t.Intro);
+                    break;
+                default:
+                    topics = topics.OrderBy(t => t.Summary);
+                    break;
+                
+            }
+            
+            return View(topics);
         }
 
         // GET: Topics/Details/5
