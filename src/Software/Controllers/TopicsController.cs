@@ -22,12 +22,13 @@ namespace Software.Controllers
         }
 
         // GET: Topics
-        public IActionResult Index(string sortOrder)
+        public async Task<IActionResult> Index(string sortOrder)
         {
             ViewBag.SummarySort = string.IsNullOrEmpty(sortOrder) ? "summary_desc" : "";
             ViewBag.IntroSort = string.IsNullOrEmpty(sortOrder) ? "intro_desc" : "intro_asc";
 
-            var topics = from s in _context.Topics select s;
+            var topics = await GetAllTopics();
+            
             switch (sortOrder)
             {
                 case "summary_desc":
@@ -174,6 +175,12 @@ namespace Software.Controllers
         private bool TopicExists(int id)
         {
             return _context.Topics.Any(e => e.Id == id);
+        }
+
+        private async Task<IEnumerable<Topic>> GetAllTopics()
+        {
+            var topics = _context.Topics.ToList();
+            return await Task.FromResult(topics);
         }
     }
 }
